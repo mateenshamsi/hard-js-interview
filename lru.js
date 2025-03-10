@@ -5,10 +5,61 @@ class LRUCache {
     this.map = new Map();
     this.head = null;
     this.tail = null;
+    this.length +=1 
   }
   get(key) {}
-  put(key, value) {
-    if (this.map.has(key)) {
+  removeNode(node){ 
+    if(node==null) return 
+    if(node.prev){
+      node.prev.next = node.next 
     }
+    if(node.next) {
+      node.next.prev = node.prev 
+    }
+    if(node==this.head) 
+    { 
+      this.head = node.next 
+    } 
+    if(node==this.tail) 
+    {
+      this.tail = node.next  
+    }
+  }
+  put(key, value) {
+    // check if we have capacity
+    if(this.length==this.capacity) { 
+      if(this.map.has(key))
+      { 
+        this.removeNode(this.tail) 
+      }
+    }
+    if (this.map.has(key)) {
+      this.removeNode(this.map.get(key)) 
+    }
+    const node = { 
+      next:this.head, 
+      value:value ,
+      key ,
+      prev:null 
+
+    }
+    this.map.set(key,node) 
+    this.head = node 
+    if(this.tail==null)
+    { 
+      this.tail = node 
+    }
+    this.length+=1 
+    
+  }
+  debug(){
+    const temp= this.head 
+    const arr = []
+    while(curr!=null)
+    { 
+      arr.push(temp) 
+      curr = this.head.next
+    }
+    arr.reduce((acc='',curr)=>acc,'')
   }
 }
